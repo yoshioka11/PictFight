@@ -11,7 +11,7 @@ var users = require('./routes/users');
 // var post = require('./routes/post');
 var mongoose = require('mongoose');
 var date = require('date-utils');
-var connection = mongoose.connect('mongodb://localhost/PictFight');
+var connection = mongoose.connect('mongodb://heroku_k768q4pd:udancbo9374hdksbnqi3a6pgie@ds149329.mlab.com:49329/heroku_k768q4pd');
 //DBのlistIDでauto incrementを使いたいので定義
 var autoIncrement = require("mongoose-auto-increment");
 
