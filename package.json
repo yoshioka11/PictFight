@@ -19,5 +19,17 @@
   },
   "devDependencies": {
     "mongoose": "^4.8.1"
-  }
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yoshioka11/PictFight.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yoshioka11/PictFight/issues"
+  },
+  "homepage": "https://github.com/yoshioka11/PictFight#readme",
+  "description": ""
 }
