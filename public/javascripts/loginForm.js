@@ -1,13 +1,20 @@
 var character = ["images/dwarf.png","images/elf.png","images/man.png","images/woman.png"];
 var passive = [0,1,2,3];
+var userName ='';
+var password ='';
+var pussive = '';
 $(function(){
   firstLoad();
+  getRoom();
 });
 
+//dialogボックス。(escと閉じるボタンで閉じれなくしている。);
 function firstLoad(){
     $('#dialog').dialog({
       title:"PictFightへようこそ",
       modal:true,
+      closeOnEscape:false,
+      open:function(event,ui){ $(".ui-dialog-titlebar-close").hide();}
     });
     $('#dialog').append('<form id="loginForm"></form>');
     $('#loginForm').append('<input type="button" value="ログイン" id="signIn">');
@@ -36,6 +43,7 @@ function signIn(){
         $('#win').text(check[0].win);
         $('#lose').text(check[0].lose);
         $('#userDate').append('<img src="'+check[0].character+'">');
+        getRoom();
       }else{
         $('#loginForm').append("IDかパスワードが間違っています").css('color','red');
         console.log("ログインに失敗しました");
@@ -74,6 +82,38 @@ function signUp(){
 });
 }
 
+function getRoom(){
+  var $room = $('.room');
+  var $li = $('<li />');
+  $.get('/rooms',function(rooms){
+    $('.room').children().remove();
+    $.each(rooms,function(index,room){
+      console.log('getRoom');
+      $li.append(document.createTextNode('部屋名['+room.roomName+']'));
+      $li.append(document.createTextNode('部屋人数:'+room.roomSum+' 観戦人数:'+room.roomFun));
+      var $botan = $('<button />').attr({
+        'id':room.roomId,
+        'value':'入室',
+      });
+      var $nyuusitu = $('<a />').attr({
+        'href':'/room/id='+room.roomId
+      });
+      $botan.append('入室');
+      $nyuusitu.append($botan);
+      $li.append($nyuusitu);
+      $room.prepend($li);
+    });
+  });
+}
+
+function guestLogin(){
+
+}
+
+function roomIn(){
+
+}
+
 $(function(){
   $('#signIn').click(function(e){
     console.log("signIn");
@@ -85,5 +125,6 @@ $(function(){
   });
   $('#guest').click(function(e){
     console.log("guest");
+    guestLogin();
   });
 });

@@ -16,10 +16,11 @@
     "mongoose-auto-increment": "5.0.1",
     "nodemon": "1.11.0",
     "date-utils": "1.2.21",
-    "mongoose" : "4.8.2"
+    "mongoose": "4.8.2"
   },
   "devDependencies": {
-    "mongoose": "^4.8.1"
+    "mongoose": "^4.8.1",
+    "nodemon": "^1.11.0"
   },
   "main": "app.js",
   "repository": {
@@ -33,7 +34,7 @@
   },
   "engines": {
     "node": "7.4.0",
-    "npm":  "4.0.5"
+    "npm": "4.0.5"
   },
   "homepage": "https://github.com/yoshioka11/PictFight#readme",
   "description": ""

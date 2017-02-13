@@ -5,13 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+// var index = require('./routes/index');
+// var users = require('./routes/users');
 
-// var post = require('./routes/post');
+var routes = require('./routes/routes');
 var mongoose = require('mongoose');
 var date = require('date-utils');
-var connection = mongoose.connect('mongodb://heroku_k768q4pd:udancbo9374hdksbnqi3a6pgie@ds149329.mlab.com:49329/heroku_k768q4pd');
+
+//ローカル環境
+var connection = mongoose.connect('mongodb://localhost/PictFight');
 //DBのlistIDでauto incrementを使いたいので定義
 var autoIncrement = require("mongoose-auto-increment");
 
@@ -31,8 +33,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+// app.use('/', index);
+// app.use('/users', users);
 
 var character = ["images/dwarf.png","images/elf.png","images/man.png","images/woman.png"];
 
@@ -50,6 +52,19 @@ var userSchema = new Schema({
 userSchema.plugin(autoIncrement.plugin, {model:'User',field:'userId'});
 mongoose.model('User', userSchema);
 var User = mongoose.model('User');
+
+var roomSchema = new Schema({
+  roomName  : String,
+  roomSum   : {type:Number ,default: 0},
+  roomFun   : {type:Number ,default: 0},
+  createdDate : {type: Date, default: Date.now}
+});
+roomSchema.plugin(autoIncrement.plugin, {model:'Room',field:'roomId'});
+mongoose.model('Room', userSchema);
+var Room = mongoose.model('Room');
+
+app.get('/',routes.top);
+app.get('/room/id=:id([0-9]+)',routes.room);
 
 //ログインチェック登録しているIDとパスワードであれば値を返す。でなければfalse
 app.post('/loginCheck',function(req,res){
@@ -89,6 +104,12 @@ app.post('/createUser',function(req,res){
       res.send(true);
     }
   });
+});
+
+app.get('/rooms',function(req,res){
+  Room.find(function(err,room){
+    res.send(room);
+   });
 });
 
 // catch 404 and forward to error handler
