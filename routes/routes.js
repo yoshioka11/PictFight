@@ -2,7 +2,6 @@ var express = require('express');
 var session = require('express-session');
 
 
-
 exports.top = function(req,res){
   if(req.session.user){
     res.render('top',{user:req.session.user});
@@ -15,4 +14,9 @@ exports.top = function(req,res){
 
 exports.room = function(req,res){
   res.render('room',{id:req.params.id});
+}
+
+exports.logout = function(req,res,next){
+    delete req.session.user;
+    res.render('logout');
 }

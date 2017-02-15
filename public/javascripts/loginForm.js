@@ -1,8 +1,13 @@
 var character = ["images/dwarf.png","images/elf.png","images/man.png","images/woman.png"];
 var passive = [0,1,2,3];
 
+
 $(function(){
+  var check = $('#username').text();
+  console.log("usernameの中身だよ:"+check);
+  if(!(check)){
   firstLoad();
+}
   getRoom();
 });
 

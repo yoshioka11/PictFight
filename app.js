@@ -74,6 +74,7 @@ var Room = mongoose.model('Room');
 
 app.get('/',routes.top);
 app.get('/room/id=:id([0-9]+)',routes.room);
+app.get('/logout',routes.logout);
 
 
 //ログインチェック登録しているIDとパスワードであれば値を返す。でなければfalse
@@ -130,9 +131,7 @@ app.get('/rooms',function(req,res){
    });
 });
 
-app.get('/test',function(req,res){
-  console.log(req.session.user);
-});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
