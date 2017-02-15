@@ -1,8 +1,6 @@
 var character = ["images/dwarf.png","images/elf.png","images/man.png","images/woman.png"];
 var passive = [0,1,2,3];
-var userName ='';
-var password ='';
-var pussive = '';
+
 $(function(){
   firstLoad();
   getRoom();

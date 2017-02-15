@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var session = require('express-session');
 // var index = require('./routes/index');
 // var users = require('./routes/users');
 
@@ -32,7 +32,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keybord cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie:{
+    maxAge: null
+  }
+}));
 // app.use('/', index);
 // app.use('/users', users);
 
@@ -63,8 +71,10 @@ roomSchema.plugin(autoIncrement.plugin, {model:'Room',field:'roomId'});
 mongoose.model('Room', userSchema);
 var Room = mongoose.model('Room');
 
+
 app.get('/',routes.top);
 app.get('/room/id=:id([0-9]+)',routes.room);
+
 
 //ログインチェック登録しているIDとパスワードであれば値を返す。でなければfalse
 app.post('/loginCheck',function(req,res){
@@ -74,6 +84,14 @@ app.post('/loginCheck',function(req,res){
   console.log("password:"+password);
   User.find({userName:userName,password:password},function(err,check){
     if(check.length){
+      console.log(check[0].userName);
+      req.session.user={
+        user:check[0].userName,
+        character:check[0].character,
+        win:check[0].win,
+        lose:check[0].lose
+      }
+      var joho = req.session.user;
       res.send(check);
     }else{
       res.send(false);
@@ -112,6 +130,9 @@ app.get('/rooms',function(req,res){
    });
 });
 
+app.get('/test',function(req,res){
+  console.log(req.session.user);
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

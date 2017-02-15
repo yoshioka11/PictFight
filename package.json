@@ -19,6 +19,7 @@
     "mongoose": "4.8.2"
   },
   "devDependencies": {
+    "express-session": "^1.15.1",
     "mongoose": "^4.8.1",
     "nodemon": "^1.11.0"
   },
