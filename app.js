@@ -68,7 +68,7 @@ var roomSchema = new Schema({
   createdDate : {type: Date, default: Date.now}
 });
 roomSchema.plugin(autoIncrement.plugin, {model:'Room',field:'roomId'});
-mongoose.model('Room', userSchema);
+mongoose.model('Room', roomSchema);
 var Room = mongoose.model('Room');
 
 
@@ -123,6 +123,15 @@ app.post('/createUser',function(req,res){
       res.send(true);
     }
   });
+});
+
+app.post('/createRoom',function(req,res){
+  console.log("ugoita");
+  var roomName = req.body.roomName;
+  var room = new Room();
+  room.roomName = roomName;
+  room.save();
+  res.send(true);
 });
 
 app.get('/rooms',function(req,res){

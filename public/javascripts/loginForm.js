@@ -109,8 +109,11 @@ function getRoom(){
   });
 }
 
-function guestLogin(){
-
+function createRoom(){
+  var roomName = $('#roomName').val();
+  $.post('/createRoom',{roomName:roomName},function(res){
+    getRoom();
+  });
 }
 
 function roomIn(){
@@ -129,5 +132,9 @@ $(function(){
   $('#guest').click(function(e){
     console.log("guest");
     guestLogin();
+  });
+  $('#createRoom').click(function(e){
+    console.log("createRoom");
+    createRoom();
   });
 });

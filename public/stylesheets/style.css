@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: auto;
 }
 
 a {
@@ -10,4 +11,30 @@ a {
 img{
   width: 100px;
   height: 100px;
+}
+
+div{
+  position: relative;
+}
+
+#field{
+  width: 1000px;
+  height: 500px;
+  background-color: blue;
+}
+#chatField{
+  width: 500px;
+  height: 200px;
+  background-color: skyblue;
+}
+#kaiwa{
+  position: absolute;
+  bottom:0;
+}
+#p1{
+  position: absolute;
+}
+#p2{
+  position: absolute;
+  bottom:0;
 }

@@ -4,13 +4,14 @@
   <span id='win'><%= user.win %></span>勝
   <span id='lose'><%= user.lose %></span>負
   <img src='<%= user.character %>'>
+  <a href='/logout'><button>LogOut</button></a>
 </div>
 <h2>PictFightへようこそ！</h2>
+<input type='text' id='roomName'><button id='createRoom'>部屋を作る</button>
 <ul class='room'>
 </ul>
 <div id='dialog' style='display:none'>
 </div>
-<a href="/logout"><button>LogOut</button></a>
 <script src='//code.jquery.com/jquery-2.2.4.min.js'></script>
 <script src="//code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
