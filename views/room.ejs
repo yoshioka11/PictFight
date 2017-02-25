@@ -1,22 +1,32 @@
-<% include header %>
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>PictFight</title>
+    <meta name="keywords" content="pictfight,よしお,">
+    <meta name="description" content="onlineでチャット＆対戦">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body onkeydown="move()">
+    <h1><a href='/'>PictFight</a></h1>
 
 <div id="field">
-  <img src="/images/man.png" id="p1">
-  <img src="/images/woman.png" id="p2">
+  <img src='/<%= user.character %>' id='p1'>
+  <img src='/images/woman.png' id='p2'>
 </div>
 
 <div id='chatField'>
   <ul id='chats'>
     <li>test</li>
   </ul>
-  <form id='kaiwa'>
-    <input type='text'>
-    <input type='submit' value='送信'>
-  </form>
+  <input id='text' type='text' name='text'/>
+  <input id='text' type='text' name='text'/>
+  <input id='send' type='button' value='送信'/>
+
 </div>
   <script src='//code.jquery.com/jquery-2.2.4.min.js'></script>
   <script src="//code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+  <script src='/socket.io/socket.io.js'></script>
   <script src='../javascripts/room.js'></script>
   </body>
   </html>

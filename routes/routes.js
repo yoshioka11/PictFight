@@ -13,7 +13,7 @@ exports.top = function(req,res){
 }
 
 exports.room = function(req,res){
-  res.render('room',{id:req.params.id});
+  res.render('room',{id:req.params.id,user:req.session.user});
 }
 
 exports.logout = function(req,res,next){
