@@ -91,28 +91,32 @@ function onListening() {
 
 var io = require('socket.io').listen(server);
 io.sockets.on('connection', function(socket) {
+  socket.on('connected',function(roomId){
+    socket.join(roomId.roomId);
+    console.log(roomId.roomId+"に入室しました。");
+  });
   //接続のidを確認
   console.log('connected', socket.id);
   // chatというイベントを受信したとき、送られた内容をすべてのクライアントに送信する
   socket.on('chat', function(chat) {
     console.log('message : ' + chat.message);
-    io.emit('chat', chat);
+    io.to(chat.roomId).emit('chat', chat);
   });
 
   socket.on('moveRight',function(position){
     console.log("きゃらくたー"+position.character);
     console.log('moveRigtht動いた x=' + position.position);
-    io.emit('moveRight',position);
+    io.to(position.roomId).emit('moveRight',position);
   });
   socket.on('moveLeft',function(position){
     console.log("きゃらくたー"+position.character);
     console.log('moveLeft動いた x=' + position.position);
-    io.emit('moveLeft',position);
+    io.to(position.roomId).emit('moveLeft',position);
   });
   socket.on('attack',function(ball){
     console.log('attack動いた Y=' + ball.ball);
     console.log('attack動いた Y=' + ball.player);
-    io.emit('attack',ball);
+    io.to(ball.roomId).emit('attack',ball);
   });
   // 接続が切断したとき
   socket.on('disconnect', function() {

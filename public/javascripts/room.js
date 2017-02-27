@@ -18,12 +18,12 @@ function connection(){
     userNo = room[0].roomSum;
     console.log(room);
     console.log(userNo);
+    socket.emit('connected',{
+      roomId:roomId[1]
+    });
   });
 }
-// socket.on('connected',function(user){
-//   userNo = user;
-//   console.log(userNo);
-// });
+
 
 socket.on('disconnected',function(){
   $.post('/disconnect',{roomId:roomId[1]},function(){
@@ -52,7 +52,8 @@ function sendMessage() {
   // chatイベントを送信する
   socket.emit('chat', {
     message:message,
-    name:name
+    name:name,
+    roomId:roomId[1]
   });
 
   // 内容をリセットする
@@ -148,13 +149,15 @@ function move(){
       charactert1_X = charactert1_X + 3;
       socket.emit('moveRight',{
         position:charactert1_X,
-        character:"p1"
+        character:"p1",
+        roomId:roomId[1]
       });
     }else if(userNo==1){
       charactert2_X = charactert2_X + 3;
       socket.emit('moveRight',{
         position:charactert2_X,
-        character:"p2"
+        character:"p2",
+        roomId:roomId[1]
       });
     }
   }else if(event.keyCode == 37){
@@ -162,13 +165,15 @@ function move(){
       charactert1_X = charactert1_X - 3;
       socket.emit('moveLeft',{
         position:charactert1_X,
-        character:"p1"
+        character:"p1",
+        roomId:roomId[1]
       });
     }else if(userNo==1){
       charactert2_X = charactert2_X - 3;
       socket.emit('moveLeft',{
         position:charactert2_X,
-        character:"p2"
+        character:"p2",
+        roomId:roomId[1]
       });
     }
   }else if(event.keyCode == 32){
@@ -187,7 +192,8 @@ function attack1(){
     if(p1Attack == 0){
       socket.emit('attack',{
         ball:attackY,
-        player:'p1'
+        player:'p1',
+        roomId:roomId[1]
       });
     }
     console.log("動いてる"+attackY);
@@ -196,7 +202,8 @@ function attack1(){
       attackY++;
       socket.emit('attack',{
         ball:attackY,
-        player:'p1'
+        player:'p1',
+        roomId:roomId[1]
       });
       timer1 = setTimeout('attack1()',1);
     }
@@ -204,7 +211,8 @@ function attack1(){
     if(p1Attack == 0){
       socket.emit('attack',{
         ball:attack2Y,
-        player:'p2'
+        player:'p2',
+        roomId:roomId[1]
       });
     }
     console.log("動いてる"+attack2Y);
@@ -213,7 +221,8 @@ function attack1(){
       attack2Y--;
       socket.emit('attack',{
         ball:attack2Y,
-        player:'p2'
+        player:'p2',
+        roomId:roomId[1]
       });
       timer2 = setTimeout('attack1()',1);
     }
