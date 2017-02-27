@@ -100,15 +100,18 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('moveRight',function(position){
+    console.log("きゃらくたー"+position.character);
     console.log('moveRigtht動いた x=' + position.position);
     io.emit('moveRight',position);
   });
   socket.on('moveLeft',function(position){
+    console.log("きゃらくたー"+position.character);
     console.log('moveLeft動いた x=' + position.position);
     io.emit('moveLeft',position);
   });
   socket.on('attack',function(ball){
     console.log('attack動いた Y=' + ball.ball);
+    console.log('attack動いた Y=' + ball.player);
     io.emit('attack',ball);
   });
   // 接続が切断したとき

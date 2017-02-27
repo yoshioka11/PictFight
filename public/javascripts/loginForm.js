@@ -87,10 +87,11 @@ function signUp(){
 
 function getRoom(){
   var $room = $('.room');
-  var $li = $('<li />');
+  
   $.get('/rooms',function(rooms){
     $('.room').children().remove();
     $.each(rooms,function(index,room){
+      var $li = $('<li />');
       console.log('getRoom');
       $li.append(document.createTextNode('部屋名['+room.roomName+']'));
       $li.append(document.createTextNode('部屋人数:'+room.roomSum+' 観戦人数:'+room.roomFun));
