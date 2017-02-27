@@ -90,7 +90,8 @@ app.post('/loginCheck',function(req,res){
         user:check[0].userName,
         character:check[0].character,
         win:check[0].win,
-        lose:check[0].lose
+        lose:check[0].lose,
+        room:null
       }
       var joho = req.session.user;
       res.send(check);
@@ -137,10 +138,32 @@ app.post('/createRoom',function(req,res){
 app.get('/rooms',function(req,res){
   Room.find(function(err,room){
     res.send(room);
-   });
+  });
 });
 
+app.post('/connect',function(req,res){
+  var roomId = req.body.roomId;
+  console.log(roomId);
+  Room.find({roomId:roomId},function(err,room){
+    console.log(room);
+    var roomSum = room[0].roomSum;
+    Room.update({roomId:roomId},{roomSum:roomSum+1},function(){
+    });
+    res.send(room);
+  });
+});
 
+app.post('/disconnect',function(req,res){
+  console.log("動いてる？");
+  var roomId = req.body.roomId;
+  Room.find({roomId:roomId},function(err,room){
+    var roomSum = room[0].roomSum;
+    Room.update({roomId:roomId},{roomSum:roomSum-1},function(){
+      res.send(room);
+      console.log("dissconectしましたｗ");
+    });
+  });
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

@@ -90,11 +90,9 @@ function onListening() {
 }
 
 var io = require('socket.io').listen(server);
-
 io.sockets.on('connection', function(socket) {
   //接続のidを確認
   console.log('connected', socket.id);
-
   // chatというイベントを受信したとき、送られた内容をすべてのクライアントに送信する
   socket.on('chat', function(chat) {
     console.log('message : ' + chat.message);
@@ -116,5 +114,6 @@ io.sockets.on('connection', function(socket) {
   // 接続が切断したとき
   socket.on('disconnect', function() {
     console.log('disconnect');
+    io.emit('dissconected');
   });
 });

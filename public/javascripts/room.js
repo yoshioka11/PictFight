@@ -1,7 +1,34 @@
 var socket = io();
-var userSum = 0;
+var userNo = 0;
+var urlParam = window.location.href;
+var roomId;
+console.log(urlParam)
+// URLにパラメータが存在する場合
+if(urlParam) {
+  roomId=urlParam.split('=')
+  console.log("roomIDだよ"+roomId[1]);
+}
+//接続管理
+$(function(){
+  connection();
+});
 
+function connection(){
+  $.post('/connect',{roomId:roomId[1]},function(room){
+    userNo = room[0].roomSum;
+    console.log(room);
+    console.log(userNo);
+  });
+}
+// socket.on('connected',function(user){
+//   userNo = user;
+//   console.log(userNo);
+// });
 
+socket.on('disconnected',function(){
+  $.post('/disconnect',{roomId:roomId[1]},function(){
+  });
+});
 // chatというイベントを受信したらHTML要素に追加する
 socket.on('chat', function(chat) {
   var messages = document.getElementById('chats');
@@ -38,15 +65,29 @@ var attackY = $('#p1').position().top;
 var p1Attack = 0;
 //moveRightを受信したら右に移動させる。
 socket.on('moveRight',function(position){
-  console.log("moveRight"+position.position);
-  document.getElementById('p1').style.left = position.position + 'px';
-  charactert1_X = $('#p1').position().left;
+  if(userNo==0){
+    console.log("moveRight"+position.position);
+    document.getElementById('p1').style.left = position.position + 'px';
+    charactert1_X = $('#p1').position().left;
+  }else if(userNo==1){
+    console.log("moveRight"+position.position);
+    document.getElementById('p2').style.left = position.position + 'px';
+    charactert2_X = $('#p2').position().left;
+  }
 });
-//moveRightを受信したら左に移動させる。
+
+
+//moveLeftを受信したら左に移動させる。
 socket.on('moveLeft',function(position){
-  console.log("moveRight"+position.position);
-  document.getElementById('p1').style.left = position.position + 'px';
-  charactert1_X = $('#p1').position().left;
+  if(userNo==0){
+    console.log("moveRight"+position.position);
+    document.getElementById('p1').style.left = position.position + 'px';
+    charactert1_X = $('#p1').position().left;
+  }else if(userNo==1){
+    console.log("moveRight"+position.position);
+    document.getElementById('p2').style.left = position.position + 'px';
+    charactert2_X = $('#p2').position().left;
+  }
 });
 
 socket.on('attack',function(ball){
@@ -57,13 +98,13 @@ socket.on('attack',function(ball){
     $('#p1').after('<img src="/images/tama.png" id="tama1">');
     document.getElementById('tama1').style.left = attackX + 'px';
   }
-      console.log("攻撃");
-      document.getElementById('tama1').style.top = ball.ball + 'px';
+  console.log("攻撃");
+  document.getElementById('tama1').style.top = ball.ball + 'px';
   if(ball.ball == 500){
-        $('#tama1').remove();
-        p1Attack = 0;
-        attackY = $('#p1').position().top;
-        clearTimeout(timer1);
+    $('#tama1').remove();
+    p1Attack = 0;
+    attackY = $('#p1').position().top;
+    clearTimeout(timer1);
   }
 });
 
@@ -72,22 +113,34 @@ function move(){
   console.log("動いてる"+charactert1_X);
   console.log("keycode"+event.keyCode);
   if(event.keyCode == 39){
-    charactert1_X = charactert1_X + 3;
-    socket.emit('moveRight',{
-      position:charactert1_X
-    });
-  }else if(event.keyCode == 37){
-    if(charactert1_X >= screenLeft){
-      charactert1_X = charactert1_X - 3;
-    }
-    socket.emit('moveLeft',{
+    if(userNo==0){
+      charactert1_X = charactert1_X + 3;
+      socket.emit('moveRight',{
         position:charactert1_X
-    });
+      });
+    }else if(userNo==1){
+      charactert2_X = charactert2_X + 3;
+      socket.emit('moveRight',{
+        position:charactert2_X
+      });
+    }
+  }else if(event.keyCode == 37){
+    if(userNo==0){
+      charactert1_X = charactert1_X - 3;
+      socket.emit('moveRight',{
+        position:charactert1_X
+      });
+    }else if(userNo==1){
+      charactert2_X = charactert2_X - 3;
+      socket.emit('moveRight',{
+        position:charactert2_X
+      });
+    }
   }else if(event.keyCode == 32){
     //攻撃するプログラム
     console.log(p1Attack);
-       attack1();
-}
+    attack1();
+  }
 }
 //スペースを押されると↓が動く
 var check = 1;
@@ -95,18 +148,18 @@ var timer1;
 function attack1(){
   // document.getElementById('tama1').style.left = attackX + 'px';
   if(p1Attack == 0){
-  socket.emit('attack',{
-    ball:attackY
-  });
-}
+    socket.emit('attack',{
+      ball:attackY
+    });
+  }
   console.log("動いてる"+attackY);
   check++;
   if(attackY <= 500){
-      attackY++;
-      socket.emit('attack',{
-        ball:attackY
-      });
-      timer1 = setTimeout('attack1()',1);
+    attackY++;
+    socket.emit('attack',{
+      ball:attackY
+    });
+    timer1 = setTimeout('attack1()',1);
   }
 }
 

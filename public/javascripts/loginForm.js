@@ -6,23 +6,23 @@ $(function(){
   var check = $('#username').text();
   console.log("usernameの中身だよ:"+check);
   if(!(check)){
-  firstLoad();
-}
+    firstLoad();
+  }
   getRoom();
 });
 
 //dialogボックス。(escと閉じるボタンで閉じれなくしている。);
 function firstLoad(){
-    $('#dialog').dialog({
-      title:"PictFightへようこそ",
-      modal:true,
-      closeOnEscape:false,
-      open:function(event,ui){ $(".ui-dialog-titlebar-close").hide();}
-    });
-    $('#dialog').append('<form id="loginForm"></form>');
-    $('#loginForm').append('<input type="button" value="ログイン" id="signIn">');
-    $('#loginForm').append('<input type="button" value="新規登録" id="signUp">');
-    $('#loginForm').append('<input type="button" value="ゲストでログイン" id="guest">');
+  $('#dialog').dialog({
+    title:"PictFightへようこそ",
+    modal:true,
+    closeOnEscape:false,
+    open:function(event,ui){ $(".ui-dialog-titlebar-close").hide();}
+  });
+  $('#dialog').append('<form id="loginForm"></form>');
+  $('#loginForm').append('<input type="button" value="ログイン" id="signIn">');
+  $('#loginForm').append('<input type="button" value="新規登録" id="signUp">');
+  $('#loginForm').append('<input type="button" value="ゲストでログイン" id="guest">');
 }
 
 //ログインボタンを押すとdialogの中身がログイン用に変わる。
@@ -60,29 +60,29 @@ function signUp(){
   $('#loginForm').append('<input type="text" name="userName" id="userId">');
   $('#loginForm').append('<input type="password" name="password" id="password">');
   console.log(character.length);
-    for(var i=0;i<character.length;i++){
-      $('#loginForm').append('<img src="'+character[i]+'"><input type="radio" value="'+i+'" name="キャラクター">');
-    }
+  for(var i=0;i<character.length;i++){
+    $('#loginForm').append('<img src="'+character[i]+'"><input type="radio" value="'+i+'" name="キャラクター">');
+  }
   $('#loginForm').append('<input type="button" value="登録する" id="create">');
   $('#create').click(function(e){
-  var userName = $('#userId').val();
-  var password = $('#password').val();
-  var pussive = $('[name=キャラクター]:checked').val();
-  if(userName.length >= 3 && password.length >= 4){
-    $.post('/createUser',{userName:userName,password:password,pussive:pussive,character:character[pussive]},function(res){
-      if(res){
-        console.log("動いてる");
-        $('#loginForm').children().remove();
-        $('#loginForm').append('<span>登録完了</span>');
-        setTimeout("signIn()",3000);
-      }else{
-        $('#loginForm').append('<span>userNameが重複しております。</span>');
-      }
-    });
-  }else{
-    $('#loginForm').append('<span>IDを３文字以上,パスワードを４文字以上で入力してください。</span>');
-  }
-});
+    var userName = $('#userId').val();
+    var password = $('#password').val();
+    var pussive = $('[name=キャラクター]:checked').val();
+    if(userName.length >= 3 && password.length >= 4){
+      $.post('/createUser',{userName:userName,password:password,pussive:pussive,character:character[pussive]},function(res){
+        if(res){
+          console.log("動いてる");
+          $('#loginForm').children().remove();
+          $('#loginForm').append('<span>登録完了</span>');
+          setTimeout("signIn()",3000);
+        }else{
+          $('#loginForm').append('<span>userNameが重複しております。</span>');
+        }
+      });
+    }else{
+      $('#loginForm').append('<span>IDを３文字以上,パスワードを４文字以上で入力してください。</span>');
+    }
+  });
 }
 
 function getRoom(){
@@ -97,6 +97,7 @@ function getRoom(){
       var $botan = $('<button />').attr({
         'id':room.roomId,
         'value':'入室',
+        'class':'buttons'
       });
       var $nyuusitu = $('<a />').attr({
         'href':'/room/id='+room.roomId
@@ -108,7 +109,6 @@ function getRoom(){
     });
   });
 }
-
 function createRoom(){
   var roomName = $('#roomName').val();
   $.post('/createRoom',{roomName:roomName},function(res){
