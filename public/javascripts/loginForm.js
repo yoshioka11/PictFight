@@ -1,4 +1,4 @@
-var character = ["/images/dwarf.png","/images/elf.png","/images/man.png","/images/woman.png"];
+var character = ["images/dwarf.png","/images/elf.png","images/man.png","images/woman.png"];
 var passive = [0,1,2,3];
 
 
@@ -87,7 +87,7 @@ function signUp(){
 
 function getRoom(){
   var $room = $('.room');
-  
+
   $.get('/rooms',function(rooms){
     $('.room').children().remove();
     $.each(rooms,function(index,room){
