@@ -66,11 +66,12 @@ var screenLeft = 3;
 var p1Attack = 0;
 var attackX = $('#p1').position().left;
 var attackY = $('#p1').position().top;
+var hanteiP1 = $('#p1').position().top;
 
 var p2Attack = 0;
 var attack2X = $('#p2').position().left;
 var attack2Y = $('#p2').position().top;
-
+var hanteiP2 = $('#p2').position().top;
 
 //moveRightを受信したら右に移動させる。
 socket.on('moveRight',function(position){
@@ -100,7 +101,7 @@ socket.on('moveLeft',function(position){
 });
 
 socket.on('attack',function(ball){
-  console.log("攻撃してるよ"+ball.pleyer);
+  console.log("攻撃してるよ"+ball.player);
   if(ball.player=='p1'){
     if(p1Attack == 0){
       p1Attack = 1;
@@ -111,6 +112,7 @@ socket.on('attack',function(ball){
     }
     console.log("p1攻撃");
     document.getElementById('tama1').style.top = ball.ball + 'px';
+    hantei();
     if(ball.ball == 500){
       $('#tama1').remove();
       p1Attack = 0;
@@ -127,6 +129,7 @@ socket.on('attack',function(ball){
     }
     console.log("p2攻撃");
     document.getElementById('tama2').style.top = ball.ball + 'px';
+    hantei();
     if(ball.ball == 0){
       $('#tama2').remove();
       p2Attack = 0;
@@ -216,11 +219,33 @@ function attack1(){
     }
   }
 }
+//当たり判定のプログラム
+function hantei(){
+  if(attackY==hanteiP2){
+    $('#p2').fadeOut(500, function(){$(this).fadeIn(500)});;
+    attackY = $('#p1').position().top;
+    $('#tama1').remove();
+    p1Attack = 0;
+    clearTimeout(timer1);
+  }else if(attack2Y==hanteiP1+100){
+    $('#p1').fadeOut(500, function(){$(this).fadeIn(500)});
+    attack2Y = $('#p2').position().top;
+    $('#tama2').remove();
+    p2Attack = 0;
+    clearTimeout(timer2);
+  }
+}
 
-
-// function test(){
-//   attackY = $('#p1').position().top;
-//   document.getElementById('tama1').style.left = attackX + 'px';
-//   document.getElementById('tama1').style.top = attackY + 'px';
-//   setTimeout('test()',1000);
-// }
+// var charactert1_X = $('#p1').position().left;
+// var charactert2_X = $('#p2').position().left;
+// var screenLeft = 3;
+//
+// var p1Attack = 0;
+// var attackX = $('#p1').position().left;
+// var attackY = $('#p1').position().top;
+// var hanteiP1 = $('#p1').position().top;
+//
+// var p2Attack = 0;
+// var attack2X = $('#p2').position().left;
+// var attack2Y = $('#p2').position().top;
+// var hanteiP2 = $('#p2').position().top;
