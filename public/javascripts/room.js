@@ -2,6 +2,8 @@ var socket = io();
 var userNo = 0;
 var urlParam = window.location.href;
 var roomId;
+var p1HP = "3";
+var p2HP = "3";
 console.log(urlParam)
 // URLにパラメータが存在する場合
 if(urlParam) {
@@ -74,6 +76,8 @@ var attack2X = $('#p2').position().left;
 var attack2Y = $('#p2').position().top;
 var hanteiP2 = $('#p2').position().top;
 
+var audio = new Audio('../audio/slap1.mp3');
+
 //moveRightを受信したら右に移動させる。
 socket.on('moveRight',function(position){
   if(position.character=='p1'){
@@ -105,6 +109,7 @@ socket.on('attack',function(ball){
   console.log("攻撃してるよ"+ball.player);
   if(ball.player=='p1'){
     if(p1Attack == 0){
+      audio.play();
       p1Attack = 1;
       attackY = $('#p1').position().top;
       attackX = $('#p1').position().left;
@@ -122,6 +127,7 @@ socket.on('attack',function(ball){
     }
   }else if(ball.player=='p2'){
     if(p2Attack == 0){
+      audio.play();
       p2Attack = 1;
       attack2Y = $('#p2').position().top;
       attack2X = $('#p2').position().left;
@@ -231,17 +237,26 @@ function attack1(){
 //当たり判定のプログラム
 function hantei(){
   if(attackY==hanteiP2){
+    p2HP--;
     $('#p2').fadeOut(500, function(){$(this).fadeIn(500)});;
     attackY = $('#p1').position().top;
     $('#tama1').remove();
     p1Attack = 0;
     clearTimeout(timer1);
   }else if(attack2Y==hanteiP1+100){
+    p1HP--;
+    $('#tama2').remove();
     $('#p1').fadeOut(500, function(){$(this).fadeIn(500)});
     attack2Y = $('#p2').position().top;
-    $('#tama2').remove();
     p2Attack = 0;
     clearTimeout(timer2);
+  }
+  if(p1HP == 0){
+    alert("player2の勝ち");
+    p1HP = 3;
+  }else if(p2HP == 0){
+    alert("player1の勝ち");
+    p2HP = 3;
   }
 }
 
