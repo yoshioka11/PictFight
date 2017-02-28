@@ -14,7 +14,7 @@ var date = require('date-utils');
 
 //ローカル環境
 // var connection = mongoose.connect('mongodb://localhost/PictFight');
-var connection = mongoose.connect(MONGODB_URI);
+var connection = mongoose.connect(process.env.MONGODB_URI);
 //DBのlistIDでauto incrementを使いたいので定義
 var autoIncrement = require("mongoose-auto-increment");
 
