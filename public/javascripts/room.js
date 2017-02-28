@@ -270,8 +270,10 @@ function hantei(){
 // var attackX = $('#p1').position().left;
 // var attackY = $('#p1').position().top;
 // var hanteiP1 = $('#p1').position().top;
+// var hanteiYP1 = $('#p1').position().left;
 //
 // var p2Attack = 0;
 // var attack2X = $('#p2').position().left;
 // var attack2Y = $('#p2').position().top;
 // var hanteiP2 = $('#p2').position().top;
+// var hanteiYP2 = $('#p2').position().left;

@@ -10,6 +10,9 @@ $(function(){
   }
   getRoom();
 });
+$('#reload').click(function(e){
+  getRoom();
+});
 
 //dialogボックス。(escと閉じるボタンで閉じれなくしている。);
 function firstLoad(){
