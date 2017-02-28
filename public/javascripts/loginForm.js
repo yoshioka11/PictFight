@@ -57,7 +57,7 @@ function signIn(){
     });
   });
 }
-
+//新規登録のプログラム
 function signUp(){
   $('#loginForm').children().remove();
   $('#loginForm').append('<input type="text" name="userName" id="userId">');
@@ -88,6 +88,7 @@ function signUp(){
   });
 }
 
+//部屋取得
 function getRoom(){
   var $room = $('.room');
 
@@ -113,6 +114,7 @@ function getRoom(){
     });
   });
 }
+//部屋作成
 function createRoom(){
   var roomName = $('#roomName').val();
   $.post('/createRoom',{roomName:roomName},function(res){
@@ -123,7 +125,7 @@ function createRoom(){
 function roomIn(){
 
 }
-
+//書くボタンによってプログラムを動かす
 $(function(){
   $('#signIn').click(function(e){
     console.log("signIn");

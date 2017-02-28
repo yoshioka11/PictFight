@@ -127,6 +127,7 @@ app.post('/createUser',function(req,res){
   });
 });
 
+//部屋を作成
 app.post('/createRoom',function(req,res){
   console.log("ugoita");
   var roomName = req.body.roomName;
@@ -135,13 +136,13 @@ app.post('/createRoom',function(req,res){
   room.save();
   res.send(true);
 });
-
+//roomsにgetアクセスがあったときに一覧を返す。
 app.get('/rooms',function(req,res){
   Room.find(function(err,room){
     res.send(room);
   });
 });
-
+//入室時に合計人数を増やして返す(この部分でsocketの複数接続を管理)
 app.post('/connect',function(req,res){
   var roomId = req.body.roomId;
   console.log(roomId);
@@ -153,7 +154,7 @@ app.post('/connect',function(req,res){
     res.send(room);
   });
 });
-
+//退室時に減らす(現状は思っている通りに動いていない改良するべき場所。でないと一度使われた部屋は使えない状態になってしまう。)
 app.post('/disconnect',function(req,res){
   console.log("動いてる？");
   var roomId = req.body.roomId;

@@ -14,7 +14,7 @@ if(urlParam) {
 $(function(){
   connection();
 });
-
+//コネクトされた場合sumの数を増やす。
 function connection(){
   $.post('/connect',{roomId:roomId[1]},function(room){
     userNo = room[0].roomSum;
@@ -25,8 +25,7 @@ function connection(){
     });
   });
 }
-
-
+//quitした場合減らす
 socket.on('disconnected',function(){
   $.post('/disconnect',{roomId:roomId[1]},function(){
   });
@@ -49,8 +48,7 @@ function sendMessage() {
   // 名前と内容を取得する
   var messageElement = document.getElementById('text');
   var message = messageElement.value;
-  var nameElement = document.getElementById('name');
-  var name = nameElement.value;
+  var name = $('#userName').text();
   // chatイベントを送信する
   socket.emit('chat', {
     message:message,
@@ -62,21 +60,23 @@ function sendMessage() {
   messageElement.value = '';
 }
 
+//キャラクターの位置取得
 var charactert1_X = $('#p1').position().left;
 var charactert2_X = $('#p2').position().left;
 var screenLeft = 3;
 
+//P1側の攻撃や移動判定など
 var p1Attack = 0;
 var attackX = $('#p1').position().left;
 var attackY = $('#p1').position().top;
 var hanteiP1 = $('#p1').position().top;
-var hanteiYP1 = $('#p1').position().left;
 
+//P2側の攻撃や移動判定など
 var p2Attack = 0;
 var attack2X = $('#p2').position().left;
 var attack2Y = $('#p2').position().top;
 var hanteiP2 = $('#p2').position().top;
-var hanteiYP2 = $('#p2').position().left;
+
 
 var audio = new Audio('../audio/slap1.mp3');
 
@@ -107,6 +107,7 @@ socket.on('moveLeft',function(position){
   }
 });
 
+//attackを受信したら攻撃する
 socket.on('attack',function(ball){
   console.log("攻撃してるよ"+ball.player);
   if(ball.player=='p1'){
@@ -148,8 +149,8 @@ socket.on('attack',function(ball){
   }
 });
 
+//keyCodeによってsocketを動かす。(キーボード左右キー＋space)
 function move(){
-  event.preventDefault();
   console.log("動いてる"+charactert1_X);
   console.log("keycode"+event.keyCode);
   if(event.keyCode == 39){
@@ -185,17 +186,18 @@ function move(){
       });
     }
   }else if(event.keyCode == 32){
+    event.preventDefault();
     //攻撃するプログラム
     console.log(p1Attack);
     attack1();
   }
 }
+
 //スペースを押されると↓が動く
 var check = 1;
 var timer1;
 var timer2;
 function attack1(){
-  // document.getElementById('tama1').style.left = attackX + 'px';
   if(userNo==0){
     if(p1Attack == 0){
       socket.emit('attack',{
@@ -239,19 +241,25 @@ function attack1(){
 //当たり判定のプログラム
 function hantei(){
   if(attackY==hanteiP2){
+    var hanteiXP1 = $('#tama1').position().left;
+    if(hanteiXP1<=charactert2_X+100 && charactert2_X <= hanteiXP1+100){
     p2HP--;
     $('#p2').fadeOut(500, function(){$(this).fadeIn(500)});;
     attackY = $('#p1').position().top;
     $('#tama1').remove();
     p1Attack = 0;
     clearTimeout(timer1);
-  }else if(attack2Y==hanteiP1+100){
+  }
+}else if(attack2Y==hanteiP1+90){
+    var hanteiXP2 = $('#tama2').position().left;
+    if(hanteiXP2<=charactert1_X+100 && charactert1_X <= hanteiXP2+100){
     p1HP--;
-    $('#tama2').remove();
     $('#p1').fadeOut(500, function(){$(this).fadeIn(500)});
     attack2Y = $('#p2').position().top;
+    $('#tama2').remove();
     p2Attack = 0;
     clearTimeout(timer2);
+  }
   }
   if(p1HP == 0){
     alert("player2の勝ち");
@@ -261,19 +269,3 @@ function hantei(){
     p2HP = 3;
   }
 }
-
-// var charactert1_X = $('#p1').position().left;
-// var charactert2_X = $('#p2').position().left;
-// var screenLeft = 3;
-//
-// var p1Attack = 0;
-// var attackX = $('#p1').position().left;
-// var attackY = $('#p1').position().top;
-// var hanteiP1 = $('#p1').position().top;
-// var hanteiYP1 = $('#p1').position().left;
-//
-// var p2Attack = 0;
-// var attack2X = $('#p2').position().left;
-// var attack2Y = $('#p2').position().top;
-// var hanteiP2 = $('#p2').position().top;
-// var hanteiYP2 = $('#p2').position().left;
