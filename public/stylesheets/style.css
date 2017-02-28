@@ -26,6 +26,7 @@ div{
   width: 500px;
   height: 200px;
   background-color: skyblue;
+  overflow: auto;
 }
 #kaiwa{
   position: absolute;
@@ -51,4 +52,7 @@ div{
   width: 30px;
   height: 30px;
   left: 500px;
+}
+#chats{
+  overflow-x: scroll;
 }

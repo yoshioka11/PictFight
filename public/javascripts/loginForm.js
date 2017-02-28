@@ -97,7 +97,7 @@ function getRoom(){
     $.each(rooms,function(index,room){
       var $li = $('<li />');
       console.log('getRoom');
-      $li.append(document.createTextNode('部屋名['+room.roomName+']'));
+      $li.append(document.createTextNode('部屋名['+valueEscape(room.roomName)+']'));
       $li.append(document.createTextNode('部屋人数:'+room.roomSum+' 観戦人数:'+room.roomFun));
       var $botan = $('<button />').attr({
         'id':room.roomId,
@@ -144,3 +144,7 @@ $(function(){
     createRoom();
   });
 });
+
+function valueEscape(val){
+    return val.replace(/[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, '\\$&');
+}

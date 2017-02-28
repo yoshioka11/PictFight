@@ -35,7 +35,7 @@ socket.on('chat', function(chat) {
   var messages = document.getElementById('chats');
   // 新しいメッセージは既にある要素より上に表示させる
   var newMessage = document.createElement('li');
-  newMessage.textContent = chat.name +'「' + chat.message + '」';
+  newMessage.textContent = chat.name +'「' + valueEscape(chat.message) + '」';
   messages.insertBefore(newMessage, messages.firstChild);
 });
 
@@ -243,23 +243,23 @@ function hantei(){
   if(attackY==hanteiP2){
     var hanteiXP1 = $('#tama1').position().left;
     if(hanteiXP1<=charactert2_X+100 && charactert2_X <= hanteiXP1+100){
-    p2HP--;
-    $('#p2').fadeOut(500, function(){$(this).fadeIn(500)});;
-    attackY = $('#p1').position().top;
-    $('#tama1').remove();
-    p1Attack = 0;
-    clearTimeout(timer1);
-  }
-}else if(attack2Y==hanteiP1+90){
+      p2HP--;
+      $('#p2').fadeOut(500, function(){$(this).fadeIn(500)});;
+      attackY = $('#p1').position().top;
+      $('#tama1').remove();
+      p1Attack = 0;
+      clearTimeout(timer1);
+    }
+  }else if(attack2Y==hanteiP1+90){
     var hanteiXP2 = $('#tama2').position().left;
     if(hanteiXP2<=charactert1_X+100 && charactert1_X <= hanteiXP2+100){
-    p1HP--;
-    $('#p1').fadeOut(500, function(){$(this).fadeIn(500)});
-    attack2Y = $('#p2').position().top;
-    $('#tama2').remove();
-    p2Attack = 0;
-    clearTimeout(timer2);
-  }
+      p1HP--;
+      $('#p1').fadeOut(500, function(){$(this).fadeIn(500)});
+      attack2Y = $('#p2').position().top;
+      $('#tama2').remove();
+      p2Attack = 0;
+      clearTimeout(timer2);
+    }
   }
   if(p1HP == 0){
     alert("player2の勝ち");
@@ -268,4 +268,8 @@ function hantei(){
     alert("player1の勝ち");
     p2HP = 3;
   }
+}
+
+function valueEscape(val){
+    return val.replace(/[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, '\\$&');
 }
